@@ -1,0 +1,50 @@
+{
+  "name": "aria-ai-agent",
+  "version": "1.0.0",
+  "description": "ARIA - Gelişmiş AI Agent with web search, memory, and code generation capabilities",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "ai",
+    "agent",
+    "artificial-intelligence",
+    "chatbot",
+    "nodejs",
+    "express",
+    "gemini",
+    "web-search",
+    "memory",
+    "code-generation"
+  ],
+  "author": "Tülin Naz",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "axios": "^1.6.2",
+    "@google/generative-ai": "^0.2.1",
+    "cheerio": "^1.0.0-rc.12",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "helmet": "^7.1.0",
+    "morgan": "^1.10.0",
+    "rate-limiter-flexible": "^4.0.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tulinnaz/aria-ai-agent.git"
+  },
+  "bugs": {
+    "url": "https://github.com/tulinnaz/aria-ai-agent/issues"
+  },
+  "homepage": "https://github.com/tulinnaz/aria-ai-agent#readme"
+}
