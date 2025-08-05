@@ -1,4 +1,12 @@
-const express = require('express');
+constconst express = require('express');
+const app = express();
+
+// Railway'in sağladığı PORT ortam değişkenini kullan
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`Sunucu http://0.0.0.0:${PORT} adresinde çalışıyor`);
+});
+express = require('express');
 const https = require('https');
 const app = express();
 
