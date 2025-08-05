@@ -1,4 +1,74 @@
-{
+// index.js
+const express = require('express');
+const dotenv = require('dotenv');
+const fetch = require('node-fetch'); // API çağrıları için
+const app = express();
+const port = process.env.PORT || 3000;
+
+// Ortam değişkenlerini yükle
+dotenv.config();
+
+// Middleware: JSON isteklerini işle
+app.use(express.json());
+
+// Basit bir doğrulama middleware'i
+const validateInput = (req, res, next) => {
+  const { message } = req.body;
+  if (!message || typeof message !== 'string') {
+    return res.status(400).json({ error: 'Geçerli bir mesaj gönderin.' });
+  }
+  next();
+};
+
+// Grok API ile iletişim kuran fonksiyon
+async function getGrokResponse(userMessage) {
+  const apiKey = process.env.XAI_API_KEY; // xAI API anahtarınızı .env dosyasından alın
+  const apiUrl = 'https://api.x.ai/v1/grok'; // Örnek API endpoint'i
+
+  try {
+    const response = await fetch(apiUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${apiKey}`,
+      },
+      body: JSON.stringify({
+        prompt: userMessage,
+        max_tokens: 100, // Yanıt uzunluğunu sınırlı tutuyoruz
+      }),
+    });
+
+    const data = await response.json();
+    if (data && data.response) {
+      return data.response; // Grok'un yanıtını döndür
+    } else {
+      throw new Error('Grok API yanıtı alınamadı.');
+    }
+  } catch (error) {
+    console.error('Grok API hatası:', error.message);
+    return 'Üzgünüm, bir hata oluştu. Lütfen tekrar deneyin!';
+  }
+}
+
+// POST endpoint: Kullanıcı mesajını al ve yanıt ver
+app.post('/chat', validateInput, async (req, res) => {
+  const { message } = req.body;
+
+  // Kullanıcı "merhaba" yazarsa özel bir başlangıç yanıtı
+  if (message.toLowerCase() === 'merhaba') {
+    const grokResponse = await getGrokResponse('Merhaba! Nasılsın?');
+    res.json({ reply: grokResponse || 'Merhaba! 😊 Nasılsın, ne konuşalım?' });
+  } else {
+    // Diğer mesajlar için Grok'a sor
+    const grokResponse = await getGrokResponse(message);
+    res.json({ reply: grokResponse });
+  }
+});
+
+// Sunucuyu başlat
+app.listen(port, () => {
+  console.log(`Sunucu http://localhost:${port} adresinde çalışıyor`);
+});{
   "name": "aria-ai-agent",
   "version": "1.0.0",
   "description": "AI powered chat application",
